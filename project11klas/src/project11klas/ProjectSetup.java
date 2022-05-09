@@ -27,7 +27,9 @@ public class ProjectSetup implements ActionListener {
    
     public static JButton exit;
     private static JTable table;
+    private static JTable table2;
     private static JTextField textField;
+    private static JTable table_1;
     
     public static void main(String[] args) {
         Run();
@@ -52,13 +54,13 @@ public class ProjectSetup implements ActionListener {
        
         
         rollDices = new JButton("Roll");
-        rollDices.setBounds(328,420,135,48);
+        rollDices.setBounds(328,348,135,56);
         rollDices.setHorizontalAlignment(JTextField.CENTER);
         rollDices.addActionListener(new ProjectSetup ());
         panel.add(rollDices);
         
         newGame = new JButton("New game");
-        newGame.setBounds(328,198,135,67);
+        newGame.setBounds(328,132,135,67);
         newGame.setHorizontalAlignment(JTextField.CENTER);
         newGame.addActionListener(new ProjectSetup());
         panel.add(newGame);
@@ -69,7 +71,7 @@ public class ProjectSetup implements ActionListener {
        
         
         exit = new JButton("Exit");
-        exit.setBounds(328,306,135,59);
+        exit.setBounds(328,244,135,59);
         exit.setHorizontalAlignment(JTextField.CENTER);
         exit.addActionListener(new ProjectSetup());
         panel.add(exit);
@@ -78,20 +80,29 @@ public class ProjectSetup implements ActionListener {
         String[] columns={"Number","Points"};
         String[] [] data ={{"1", number1}, {"2", number1},{"3", number1},{"4", number1},{"5", number1},{"6", number1}};
         table = new JTable(data,columns);
+        
+        String[] columns2={"Type","Points"};
+        String[] [] data2 ={{"pair", number1}, {"2 pairs", number1},{"triple", number1},{"square", number1},{"full", number1},{"small bucket", number1},{"big bucket", number1},{"chance", number1},{"general", number1},{"total", number1}};
+        table2 = new JTable(data2,columns2);
+        table2.setBounds(28, 244, 183, 160);
+        panel.add(table2);
        
         table.setFillsViewportHeight(true);
-        table.setBounds(39, 164, 183, 101);
+        table.setBounds(28, 132, 183, 101);
         
         panel.add(table);
         
         JLabel lblNewLabel = new JLabel("You have        remaining rolls");
-        lblNewLabel.setBounds(39, 306, 206, 59);
+        lblNewLabel.setBounds(28, 415, 206, 59);
         panel.add(lblNewLabel);
         
         textField = new JTextField();
-        textField.setBounds(103, 325, 13, 20);
+        textField.setBounds(84, 434, 13, 20);
         panel.add(textField);
         textField.setColumns(10);
+        
+       
+        
         
         
         
@@ -149,6 +160,3 @@ public class ProjectSetup implements ActionListener {
         
     }
     }
-
-
-
