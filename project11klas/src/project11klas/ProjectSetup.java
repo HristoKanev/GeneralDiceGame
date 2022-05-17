@@ -24,11 +24,8 @@ public class ProjectSetup implements ActionListener {
     
     private static JButton newGame;
     private static JButton rollDices;
-   
-    public static JButton exit;
     private static JTable table;
     private static JTable table2;
-    private static JTextField textField;
     private static JTable table_1;
     
     public static void main(String[] args) {
@@ -36,12 +33,10 @@ public class ProjectSetup implements ActionListener {
         
        
     }
-    
-    ///Proba
 
     public static void Run(){
         JFrame frame = new JFrame("mainMenu");
-        frame.setSize(514,550);
+        frame.setSize(534,550);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -49,34 +44,23 @@ public class ProjectSetup implements ActionListener {
         panel.setLayout(null);
         frame.getContentPane().add(panel);
         JLabel title = new JLabel("General - dice game",SwingConstants.CENTER);
-        title.setBounds(0,10,500,40);
+        title.setBounds(10,10,498,40);
         title.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,20));
         panel.add(title);
 
        
         
         rollDices = new JButton("Roll");
-        rollDices.setBounds(328,348,135,56);
+        rollDices.setBounds(277,174,158,44);
         rollDices.setHorizontalAlignment(JTextField.CENTER);
         rollDices.addActionListener(new ProjectSetup ());
         panel.add(rollDices);
         
         newGame = new JButton("New game");
-        newGame.setBounds(328,132,135,67);
+        newGame.setBounds(277,282,158,67);
         newGame.setHorizontalAlignment(JTextField.CENTER);
         newGame.addActionListener(new ProjectSetup());
         panel.add(newGame);
-        
-        
-        
-        
-       
-        
-        exit = new JButton("Exit");
-        exit.setBounds(328,244,135,59);
-        exit.setHorizontalAlignment(JTextField.CENTER);
-        exit.addActionListener(new ProjectSetup());
-        panel.add(exit);
         
         String number1="5";
         String[] columns={"Number","Points"};
@@ -86,22 +70,54 @@ public class ProjectSetup implements ActionListener {
         String[] columns2={"Type","Points"};
         String[] [] data2 ={{"pair", number1}, {"2 pairs", number1},{"triple", number1},{"square", number1},{"full", number1},{"small bucket", number1},{"big bucket", number1},{"chance", number1},{"general", number1},{"total", number1}};
         table2 = new JTable(data2,columns2);
-        table2.setBounds(28, 244, 183, 160);
+        table2.setBounds(28, 189, 183, 160);
         panel.add(table2);
        
         table.setFillsViewportHeight(true);
-        table.setBounds(28, 132, 183, 101);
+        table.setBounds(28, 77, 183, 101);
         
         panel.add(table);
         
-        JLabel lblNewLabel = new JLabel("You have        remaining rolls");
-        lblNewLabel.setBounds(28, 415, 206, 59);
+        JLabel lblNewLabel = new JLabel("You have 3 remaining rolls");
+        lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel.setBounds(221, 134, 270, 44);
         panel.add(lblNewLabel);
         
-        textField = new JTextField();
-        textField.setBounds(84, 434, 13, 20);
-        panel.add(textField);
-        textField.setColumns(10);
+        JFormattedTextField formattedTextField = new JFormattedTextField();
+        formattedTextField.setFont(new Font("Tahoma", Font.PLAIN, 33));
+        formattedTextField.setHorizontalAlignment(SwingConstants.CENTER);
+        formattedTextField.setText("2");
+        formattedTextField.setBounds(221, 77, 46, 46);
+        panel.add(formattedTextField);
+        
+        JFormattedTextField formattedTextField_1 = new JFormattedTextField();
+        formattedTextField_1.setText("2");
+        formattedTextField_1.setHorizontalAlignment(SwingConstants.CENTER);
+        formattedTextField_1.setFont(new Font("Tahoma", Font.PLAIN, 33));
+        formattedTextField_1.setBounds(277, 77, 46, 46);
+        panel.add(formattedTextField_1);
+        
+        JFormattedTextField formattedTextField_2 = new JFormattedTextField();
+        formattedTextField_2.setText("2");
+        formattedTextField_2.setHorizontalAlignment(SwingConstants.CENTER);
+        formattedTextField_2.setFont(new Font("Tahoma", Font.PLAIN, 33));
+        formattedTextField_2.setBounds(333, 77, 46, 46);
+        panel.add(formattedTextField_2);
+        
+        JFormattedTextField formattedTextField_3 = new JFormattedTextField();
+        formattedTextField_3.setText("2");
+        formattedTextField_3.setHorizontalAlignment(SwingConstants.CENTER);
+        formattedTextField_3.setFont(new Font("Tahoma", Font.PLAIN, 33));
+        formattedTextField_3.setBounds(389, 77, 46, 46);
+        panel.add(formattedTextField_3);
+        
+        JFormattedTextField formattedTextField_4 = new JFormattedTextField();
+        formattedTextField_4.setText("3");
+        formattedTextField_4.setHorizontalAlignment(SwingConstants.CENTER);
+        formattedTextField_4.setFont(new Font("Tahoma", Font.PLAIN, 33));
+        formattedTextField_4.setBounds(445, 77, 46, 46);
+        panel.add(formattedTextField_4);
         
        
         
@@ -154,11 +170,8 @@ public class ProjectSetup implements ActionListener {
         else if(e.getSource()==rollDices)
         {
         	 System.exit(0);
-             }
-       
-        else if(e.getSource()==exit){
-            System.exit(0);
         }
+       
         
     }
     }
