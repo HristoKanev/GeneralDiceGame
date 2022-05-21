@@ -1,6 +1,7 @@
 package project11klas;
 
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -30,10 +31,15 @@ public class ProjectSetup implements ActionListener {
     
     public static void main(String[] args) {
         Run();
-        
-       
     }
+    
 
+    
+    static JButton[] dice = new JButton[5];
+    static int[] dice_number = new int[5];
+    static int rolls = 3;
+    static JLabel remaining = new JLabel(String.format("You have %2d remaining rolls", rolls));
+    
     public static void Run(){
         JFrame frame = new JFrame("mainMenu");
         frame.setSize(534,550);
@@ -78,46 +84,23 @@ public class ProjectSetup implements ActionListener {
         
         panel.add(table);
         
-        JLabel lblNewLabel = new JLabel("You have 3 remaining rolls");
-        lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNewLabel.setBounds(221, 134, 270, 44);
-        panel.add(lblNewLabel);
         
-        JFormattedTextField formattedTextField = new JFormattedTextField();
-        formattedTextField.setFont(new Font("Tahoma", Font.PLAIN, 33));
-        formattedTextField.setHorizontalAlignment(SwingConstants.CENTER);
-        formattedTextField.setText("2");
-        formattedTextField.setBounds(221, 77, 46, 46);
-        panel.add(formattedTextField);
+        remaining.setHorizontalTextPosition(SwingConstants.CENTER);
+        remaining.setHorizontalAlignment(SwingConstants.CENTER);
+        remaining.setBounds(221, 134, 270, 44);
+        panel.add(remaining);
         
-        JFormattedTextField formattedTextField_1 = new JFormattedTextField();
-        formattedTextField_1.setText("2");
-        formattedTextField_1.setHorizontalAlignment(SwingConstants.CENTER);
-        formattedTextField_1.setFont(new Font("Tahoma", Font.PLAIN, 33));
-        formattedTextField_1.setBounds(277, 77, 46, 46);
-        panel.add(formattedTextField_1);
-        
-        JFormattedTextField formattedTextField_2 = new JFormattedTextField();
-        formattedTextField_2.setText("2");
-        formattedTextField_2.setHorizontalAlignment(SwingConstants.CENTER);
-        formattedTextField_2.setFont(new Font("Tahoma", Font.PLAIN, 33));
-        formattedTextField_2.setBounds(333, 77, 46, 46);
-        panel.add(formattedTextField_2);
-        
-        JFormattedTextField formattedTextField_3 = new JFormattedTextField();
-        formattedTextField_3.setText("2");
-        formattedTextField_3.setHorizontalAlignment(SwingConstants.CENTER);
-        formattedTextField_3.setFont(new Font("Tahoma", Font.PLAIN, 33));
-        formattedTextField_3.setBounds(389, 77, 46, 46);
-        panel.add(formattedTextField_3);
-        
-        JFormattedTextField formattedTextField_4 = new JFormattedTextField();
-        formattedTextField_4.setText("3");
-        formattedTextField_4.setHorizontalAlignment(SwingConstants.CENTER);
-        formattedTextField_4.setFont(new Font("Tahoma", Font.PLAIN, 33));
-        formattedTextField_4.setBounds(445, 77, 46, 46);
-        panel.add(formattedTextField_4);
+        for (int i = 0;i<5;i++) 
+        { 
+        	dice[i]=new JButton();
+        	dice[i].setMargin(new Insets(0,0,0,0));
+        	dice[i].setFont(new Font("Tahoma", Font.PLAIN, 33));
+        	dice[i].setHorizontalAlignment(SwingConstants.CENTER);
+        	dice[i].setEnabled(false);
+        	dice[i].setBounds(221+i*56, 77, 46, 46);
+            dice[i].addActionListener(new ProjectSetup());
+            panel.add(dice[i]);
+        }
         
        
         
@@ -169,7 +152,30 @@ public class ProjectSetup implements ActionListener {
         }
         else if(e.getSource()==rollDices)
         {
-        	 System.exit(0);
+        		 for (int i = 0;i<5;i++) {
+        			 if(!dice[i].isEnabled()) {
+            			 dice_number[i]=(int) (Math.random()*6+1);
+        				 dice[i].setEnabled(true);
+        				 dice[i].setText(Integer.toString(dice_number[i]));
+        			 }
+        		 }
+        		 rolls--;
+    			 if(rolls==0) {
+    				 for(int i = 0;i<5;i++) {
+    			        dice[i].setEnabled(false);
+    			     }
+    			 }
+    			 rollDices.setEnabled(false);
+    			 remaining.setText(String.format("You have %2d remaining rolls", rolls));
+    			 return;
+        }
+        for(int i = 0;i<5;i++) {
+        	if(e.getSource()==dice[i]) {
+        		dice[i].setEnabled(false);
+        		dice[i].setText(null);
+        		rollDices.setEnabled(true);
+        		return;
+        	}
         }
        
         
