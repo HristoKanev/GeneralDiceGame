@@ -167,6 +167,7 @@ public class ProjectSetup implements ActionListener {
     			 }
     			 rollDices.setEnabled(false);
     			 remaining.setText(String.format("You have %2d remaining rolls", rolls));
+    			 calculate_results();
     			 return;
         }
         for(int i = 0;i<5;i++) {
@@ -180,4 +181,8 @@ public class ProjectSetup implements ActionListener {
        
         
     }
+    
+    public void calculate_results() {
+    	//TODO
     }
+}
