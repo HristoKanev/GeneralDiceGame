@@ -25,7 +25,6 @@ public class ProjectSetup implements ActionListener {
     
     private static JButton newGame;
     private static JButton rollDices;
-    private static JTable table;
     private static JTable table2;
     private static JTable table_1;
     
@@ -39,6 +38,12 @@ public class ProjectSetup implements ActionListener {
     static int[] dice_number = new int[5];
     static int rolls = 3;
     static JLabel remaining = new JLabel(String.format("You have %2d remaining rolls", rolls));
+    
+    static JButton[] btn_ch = new JButton[6];
+    static JLabel[] lb_ch = new JLabel[6];
+    static JLabel[] lb_2 = new JLabel[10];
+    static String[] data ={"pair","2 pairs","triple","square","full","small bucket","big bucket","chance","general", "total"};
+    static JButton[] btn_2 = new JButton[10];
     
     public static void Run(){
         JFrame frame = new JFrame("mainMenu");
@@ -59,36 +64,42 @@ public class ProjectSetup implements ActionListener {
         rollDices = new JButton("Roll");
         rollDices.setBounds(277,174,158,44);
         rollDices.setHorizontalAlignment(JTextField.CENTER);
+        rollDices.setFocusPainted(false);
         rollDices.addActionListener(new ProjectSetup ());
         panel.add(rollDices);
         
         newGame = new JButton("New game");
         newGame.setBounds(277,282,158,67);
         newGame.setHorizontalAlignment(JTextField.CENTER);
+        newGame.setFocusPainted(false);
         newGame.addActionListener(new ProjectSetup());
         panel.add(newGame);
         
-        String number1="5";
-        String[] columns={"Number","Points"};
-        String[] [] data ={{"1", number1}, {"2", number1},{"3", number1},{"4", number1},{"5", number1},{"6", number1}};
-        table = new JTable(data,columns);
-        
-        String[] columns2={"Type","Points"};
-        String[] [] data2 ={{"pair", number1}, {"2 pairs", number1},{"triple", number1},{"square", number1},{"full", number1},{"small bucket", number1},{"big bucket", number1},{"chance", number1},{"general", number1},{"total", number1}};
-        table2 = new JTable(data2,columns2);
-        table2.setBounds(28, 189, 183, 160);
-        panel.add(table2);
-       
-        table.setFillsViewportHeight(true);
-        table.setBounds(28, 77, 183, 101);
-        
-        panel.add(table);
         
         
         remaining.setHorizontalTextPosition(SwingConstants.CENTER);
         remaining.setHorizontalAlignment(SwingConstants.CENTER);
         remaining.setBounds(221, 134, 270, 44);
         panel.add(remaining);
+        
+        
+        for (int i = 0;i<6;i++) 
+        { 
+        	btn_ch[i] = new JButton("0");
+        	btn_ch[i].addActionListener(new ActionListener() {
+            	public void actionPerformed(ActionEvent e) {
+            	}
+            });
+        	btn_ch[i].setBounds(126, 78+i*20, 74, 19);
+        	btn_ch[i].setFocusPainted(false);
+            panel.add(btn_ch[i]);
+            
+            lb_ch[i] = new JLabel(Integer.toString(i+1));
+            lb_ch[i].setHorizontalAlignment(SwingConstants.RIGHT);
+            lb_ch[i].setHorizontalTextPosition(SwingConstants.CENTER);
+            lb_ch[i].setBounds(0, 80+i*20, 116, 14);
+            panel.add(lb_ch[i]);
+        }
         
         for (int i = 0;i<5;i++) 
         { 
@@ -97,13 +108,30 @@ public class ProjectSetup implements ActionListener {
         	dice[i].setFont(new Font("Tahoma", Font.PLAIN, 33));
         	dice[i].setHorizontalAlignment(SwingConstants.CENTER);
         	dice[i].setEnabled(false);
+        	dice[i].setFocusPainted(false);
         	dice[i].setBounds(221+i*56, 77, 46, 46);
             dice[i].addActionListener(new ProjectSetup());
             panel.add(dice[i]);
         }
         
-       
-        
+        for (int i = 0;i<10;i++) 
+        { 
+
+        	btn_2[i] = new JButton("0");
+        	btn_2[i].addActionListener(new ActionListener() {
+            	public void actionPerformed(ActionEvent e) {
+            	}
+            });
+        	btn_2[i].setBounds(126, 220+i*20, 74, 19);
+        	btn_2[i].setFocusPainted(false);
+            panel.add(btn_2[i]);
+            
+            lb_2[i] = new JLabel(data[i]);
+            lb_2[i].setHorizontalAlignment(SwingConstants.RIGHT);
+            lb_2[i].setHorizontalTextPosition(SwingConstants.CENTER);
+            lb_2[i].setBounds(0, 220+i*20, 116, 14);
+            panel.add(lb_2[i]);
+        }
         
         
         
