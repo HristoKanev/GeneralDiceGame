@@ -41,9 +41,10 @@ public class ProjectSetup implements ActionListener {
     
     static JButton[] btn_ch = new JButton[6];
     static JLabel[] lb_ch = new JLabel[6];
-    static JLabel[] lb_2 = new JLabel[10];
-    static String[] data ={"pair","2 pairs","triple","square","full","small bucket","big bucket","chance","general", "total"};
-    static JButton[] btn_2 = new JButton[10];
+    static JLabel[] lb_2 = new JLabel[9];
+    static String[] data ={"pair","2 pairs","triple","square","full","small bucket","big bucket","chance","general"};
+    static JButton[] btn_2 = new JButton[9];
+    static JLabel total = new JLabel();
     
     public static void Run(){
         JFrame frame = new JFrame("mainMenu");
@@ -114,7 +115,7 @@ public class ProjectSetup implements ActionListener {
             panel.add(dice[i]);
         }
         
-        for (int i = 0;i<10;i++) 
+        for (int i = 0;i<9;i++) 
         { 
 
         	btn_2[i] = new JButton("0");
@@ -132,6 +133,13 @@ public class ProjectSetup implements ActionListener {
             lb_2[i].setBounds(0, 220+i*20, 116, 14);
             panel.add(lb_2[i]);
         }
+        
+        total.setText(String.format("Your total score is: %2d", 2));
+        total.setHorizontalAlignment(SwingConstants.RIGHT);
+        total.setHorizontalTextPosition(SwingConstants.CENTER);
+        total.setBounds(0, 420, 200, 14);
+        panel.add(total);
+        
         
         
         
