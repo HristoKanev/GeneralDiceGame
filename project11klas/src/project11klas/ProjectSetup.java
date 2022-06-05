@@ -26,8 +26,7 @@ public class ProjectSetup implements ActionListener {
     
     private static JButton newGame;
     private static JButton rollDices;
-    private static JTable table2;
-    private static JTable table_1;
+    private static JButton exit;
     
     public static void main(String[] args) {
         Run();
@@ -46,7 +45,10 @@ public class ProjectSetup implements ActionListener {
     static String[] data ={"pair","2 pairs","triple","square","full","small bucket","big bucket","chance","general"};
     static JButton[] btn_2 = new JButton[9];
     static JLabel total = new JLabel();
+    static JLabel gameOver = new JLabel();
     static int totalScore = 0;
+    static boolean areDicesThrown = false;
+    static int combinationsUsed = 0;
     
     public static void Run(){
         JFrame frame = new JFrame("mainMenu");
@@ -72,13 +74,18 @@ public class ProjectSetup implements ActionListener {
         panel.add(rollDices);
         
         newGame = new JButton("New game");
-        newGame.setBounds(277,282,158,67);
+        newGame.setBounds(277,262,158,67);
         newGame.setHorizontalAlignment(JTextField.CENTER);
         newGame.setFocusPainted(false);
         newGame.addActionListener(new ProjectSetup());
         panel.add(newGame);
         
-        
+        exit = new JButton("Exit");
+        exit.setHorizontalAlignment(SwingConstants.CENTER);
+        exit.setFocusPainted(false);
+        exit.setBounds(277, 367, 158, 67);
+        exit.addActionListener(new ProjectSetup());
+        panel.add(exit);
         
         remaining.setHorizontalTextPosition(SwingConstants.CENTER);
         remaining.setHorizontalAlignment(SwingConstants.CENTER);
@@ -88,11 +95,8 @@ public class ProjectSetup implements ActionListener {
         
         for (int i = 0;i<6;i++) 
         { 
-        	btn_ch[i] = new JButton("0");
-        	btn_ch[i].addActionListener(new ActionListener() {
-            	public void actionPerformed(ActionEvent e) {
-            	}
-            });
+        	btn_ch[i] = new JButton();
+        	btn_ch[i].addActionListener(new ProjectSetup());
         	btn_ch[i].setBounds(126, 78+i*20, 74, 19);
         	btn_ch[i].setFocusPainted(false);
             panel.add(btn_ch[i]);
@@ -120,11 +124,8 @@ public class ProjectSetup implements ActionListener {
         for (int i = 0;i<9;i++) 
         { 
 
-        	btn_2[i] = new JButton("0");
-        	btn_2[i].addActionListener(new ActionListener() {
-            	public void actionPerformed(ActionEvent e) {
-            	}
-            });
+        	btn_2[i] = new JButton();
+        	btn_2[i].addActionListener(new ProjectSetup());
         	btn_2[i].setBounds(126, 220+i*20, 74, 19);
         	btn_2[i].setFocusPainted(false);
             panel.add(btn_2[i]);
@@ -136,14 +137,17 @@ public class ProjectSetup implements ActionListener {
             panel.add(lb_2[i]);
         }
         
-        total.setText(String.format("Your total score is: %2d", totalScore));
+        total.setText(String.format("Total score: %2d", totalScore));
         total.setHorizontalAlignment(SwingConstants.RIGHT);
         total.setHorizontalTextPosition(SwingConstants.CENTER);
         total.setBounds(0, 420, 200, 14);
         panel.add(total);
         
-        
-        
+        gameOver.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        gameOver.setText(String.format("Game Over! Your total score is: %2d", totalScore));
+        gameOver.setBounds(81, 445, 439, 40);
+        gameOver.setVisible(false);
+        panel.add(gameOver);
         
         frame.setFocusable(true);
         frame.addKeyListener(new KeyListener() {
@@ -175,46 +179,170 @@ public class ProjectSetup implements ActionListener {
     }
    
    
-    
-    
-   
-    
-    
     @Override
     public void actionPerformed(ActionEvent e) {
 
 
         if(e.getSource()==newGame)
         {
-        	 System.exit(0);
+        	rolls = 3;
+    		remaining.setText(String.format("You have %2d remaining rolls", rolls));
+    		totalScore = 0;
+    		total.setText(String.format("Total score: %2d", totalScore));
+    		for(int j = 0; j < 5; j++)
+    		{
+    			dice[j].setText(null);
+    			dice[j].setEnabled(false);
+            	dice[j].setFocusPainted(false);
+    		}
+    		rollDices.setEnabled(true);
+    		areDicesThrown = false;
+    		for(int j = 0; j < 6; j++)
+    		{
+    			btn_ch[j].setText(null);
+    			btn_ch[j].setEnabled(true);
+    		}
+    		for(int j = 0; j < 9; j++)
+    		{
+    			btn_2[j].setText(null);
+    			btn_2[j].setEnabled(true);
+    		}
+    		combinationsUsed = 0;
+    		gameOver.setVisible(false);
         }
-        else if(e.getSource()==rollDices)
+        else
         {
-        		 for (int i = 0;i<5;i++) {
-        			 if(!dice[i].isEnabled()) {
-            			 dice_number[i]=(int) (Math.random()*6+1);
-        				 dice[i].setEnabled(true);
-        				 dice[i].setText(Integer.toString(dice_number[i]));
-        			 }
-        		 }
-        		 rolls--;
-    			 if(rolls==0) {
-    				 for(int i = 0;i<5;i++) {
-    			        dice[i].setEnabled(false);
-    			     }
-    			 }
-    			 rollDices.setEnabled(false);
-    			 remaining.setText(String.format("You have %2d remaining rolls", rolls));
-    			 calculate_results();
-    			 return;
-        }
-        for(int i = 0;i<5;i++) {
-        	if(e.getSource()==dice[i]) {
-        		dice[i].setEnabled(false);
-        		dice[i].setText(null);
-        		rollDices.setEnabled(true);
-        		return;
+        	if(e.getSource() == exit)
+        	{
+        		System.exit(0);
         	}
+        	else
+        	{
+			    if(e.getSource()==rollDices)
+			    {
+		    		 for (int i = 0;i<5;i++) {
+		    			 if(!dice[i].isEnabled()) {
+		        			 dice_number[i]=(int) (Math.random()*6+1);
+		    				 dice[i].setEnabled(true);
+		    				 dice[i].setText(Integer.toString(dice_number[i]));
+		    			 }
+		    		 }
+		    		 areDicesThrown = true;
+		    		 rolls--;
+					 if(rolls==0) {
+						 for(int i = 0;i<5;i++) {
+					        dice[i].setEnabled(false);
+					     }
+					 }
+					 rollDices.setEnabled(false);
+					 remaining.setText(String.format("You have %2d remaining rolls", rolls));
+					 for(int j = 0; j < 9; j++)
+					 {
+						 if(btn_2[j].isEnabled() == true)
+						 {
+							 btn_2[j].setText("0");
+						 }
+					 }
+					 calculate_results();
+					 return;
+			    }
+			    else
+			    {
+				    for(int i = 0;i<5;i++) {
+				    	if(e.getSource()==dice[i]) {
+				    		dice[i].setEnabled(false);
+				    		dice[i].setText(null);
+				    		rollDices.setEnabled(true);
+				    		return;
+				    	}
+				    }
+				    
+				    for(int i = 0; i < 6; i++)
+				    {
+				    	if(e.getSource() == btn_ch[i] && areDicesThrown == true) 
+				    	{
+				    		btn_ch[i].setEnabled(false);
+				    		rolls = 3;
+				    		remaining.setText(String.format("You have %2d remaining rolls", rolls));
+				    		totalScore += Integer.parseInt(btn_ch[i].getText());
+				    		total.setText(String.format("Total score: %2d", totalScore));
+				    		for(int j = 0; j < 5; j++)
+				    		{
+				    			dice[j].setText(null);
+				    			dice[j].setEnabled(false);
+				            	dice[j].setFocusPainted(false);
+				    		}
+				    		rollDices.setEnabled(true);
+				    		areDicesThrown = false;
+				    		for(int j = 0; j < 6; j++)
+				    		{
+				    			if(btn_ch[j].isEnabled() == true)
+				    			{
+				    				btn_ch[j].setText(null);
+				    			}
+				    		}
+				    		for(int j = 0; j < 9; j++)
+				    		{
+				    			if(btn_2[j].isEnabled() == true)
+				    			{
+				    				btn_2[j].setText(null);
+				    			}
+				    		}
+				    		combinationsUsed++;
+				    		if(combinationsUsed == 15)
+				    		{
+				    			gameOver.setText(String.format("Game Over! Your total score is: %2d", totalScore));
+				    			gameOver.setVisible(true);
+				    			rollDices.setEnabled(false);
+				    		}
+				    		return ;
+				    	}
+				    }
+				    
+				    for(int i = 0; i < 9; i++)
+				    {
+				    	if(e.getSource() == btn_2[i] && areDicesThrown == true) 
+				    	{
+				    		btn_2[i].setEnabled(false);
+				    		rolls = 3;
+				    		remaining.setText(String.format("You have %2d remaining rolls", rolls));
+				    		totalScore += Integer.parseInt(btn_2[i].getText());
+				    		total.setText(String.format("Total score: %2d", totalScore));
+				    		for(int j = 0; j < 5; j++)
+				    		{
+				    			dice[j].setText(null);
+				    			dice[j].setEnabled(false);
+				            	dice[j].setFocusPainted(false);
+				    		}
+				    		rollDices.setEnabled(true);
+				    		areDicesThrown = false;
+				    		for(int j = 0; j < 6; j++)
+				    		{
+				    			if(btn_ch[j].isEnabled() == true)
+				    			{
+				    				btn_ch[j].setText(null);
+				    			}
+				    		}
+				    		for(int j = 0; j < 9; j++)
+				    		{
+				    			if(btn_2[j].isEnabled() == true)
+				    			{
+				    				btn_2[j].setText(null);
+				    			}
+				    		}
+				    		combinationsUsed++;
+				    		if(combinationsUsed == 15)
+				    		{
+				    			gameOver.setText(String.format("Game Over! Your total score is: %2d", totalScore));
+				    			gameOver.setVisible(true);
+				    			rollDices.setEnabled(false);
+				    		}
+				    		return ;
+				    	}
+				    }
+				    
+			    }
+		    }
         }
        
         
@@ -249,22 +377,25 @@ public class ProjectSetup implements ActionListener {
     	
     	for(int i = 1; i <= 6; i++) 
     	{
-    		int numberOfThis = 0;
-    		for(int j = 0; j < 5; j++)
+    		if(btn_ch[i - 1].isEnabled() == true)
     		{
-    			if(whatNumbers[j] == i)
-    			{
-    				numberOfThis++;
-    			}
-    		}
-    		
-    		if(numberOfThis < 3)
-    		{
-    			btn_ch[i - 1].setText("-25");
-    		}
-    		else 
-    		{
-    			btn_ch[i - 1].setText(Integer.toString((numberOfThis - 3)*i));
+				int numberOfThis = 0;
+				for(int j = 0; j < 5; j++)
+				{
+					if(whatNumbers[j] == i)
+					{
+						numberOfThis++;
+					}
+				}
+				
+				if(numberOfThis < 3)
+				{
+					btn_ch[i - 1].setText("-25");
+				}
+				else 
+				{
+					btn_ch[i - 1].setText(Integer.toString((numberOfThis - 3)*i));
+				}
     		}
     	
     	}
@@ -272,80 +403,107 @@ public class ProjectSetup implements ActionListener {
     	/// Combinations part
     	
     	/// Pair
-    	for(int i = 3; i >= 0; i--)
+    	if(btn_2[0].isEnabled() == true)
     	{
-    		if(whatNumbers[i] == whatNumbers[i + 1])
-    		{
-    			btn_2[0].setText(Integer.toString(whatNumbers[i]*2));
-    			break;
-    		}
+	    	for(int i = 3; i >= 0; i--)
+	    	{
+	    		if(whatNumbers[i] == whatNumbers[i + 1])
+	    		{
+	    			btn_2[0].setText(Integer.toString(whatNumbers[i]*2));
+	    			break;
+	    		}
+	    	}
     	}
     	
     	/// 2 Pairs
-    	for(int i = 3; i >= 0; i--)
+    	if(btn_2[1].isEnabled() == true)
     	{
-    		if(whatNumbers[i] == whatNumbers[i + 1])
-    		{
-    			for(int j = i - 2; j >= 0; j--)
-    			{
-    				if(whatNumbers[j] == whatNumbers[j + 1])
-    				{
-    					btn_2[1].setText(Integer.toString(whatNumbers[i]*2 + whatNumbers[j]*2));
-    				}
-    			}
-    		}
+	    	for(int i = 3; i >= 0; i--)
+	    	{
+	    		if(whatNumbers[i] == whatNumbers[i + 1])
+	    		{
+	    			for(int j = i - 2; j >= 0; j--)
+	    			{
+	    				if(whatNumbers[j] == whatNumbers[j + 1])
+	    				{
+	    					btn_2[1].setText(Integer.toString(whatNumbers[i]*2 + whatNumbers[j]*2));
+	    				}
+	    			}
+	    		}
+	    	}
     	}
     	
     	/// Triple
-    	for(int i = 2; i >= 0; i--)
+    	if(btn_2[2].isEnabled() == true)
     	{
-    		if(whatNumbers[i] == whatNumbers[i + 2])
-    		{
-    			btn_2[2].setText(Integer.toString(whatNumbers[i]*3));
-    		}
+	    	for(int i = 2; i >= 0; i--)
+	    	{
+	    		if(whatNumbers[i] == whatNumbers[i + 2])
+	    		{
+	    			btn_2[2].setText(Integer.toString(whatNumbers[i]*3));
+	    		}
+	    	}
     	}
     	
     	/// Square
-    	for(int i = 1; i >= 0; i--)
+    	if(btn_2[3].isEnabled() == true)
     	{
-    		if(whatNumbers[i] == whatNumbers[i + 3])
-    		{
-    			btn_2[3].setText(Integer.toString(whatNumbers[i]*4));
-    		}
+	    	for(int i = 1; i >= 0; i--)
+	    	{
+	    		if(whatNumbers[i] == whatNumbers[i + 3])
+	    		{
+	    			btn_2[3].setText(Integer.toString(whatNumbers[i]*4));
+	    		}
+	    	}
     	}
     	
     	///Full
-    	if(whatNumbers[0] == whatNumbers[2] && whatNumbers[3] == whatNumbers[4])
+    	if(btn_2[4].isEnabled() == true)
     	{
-    		btn_2[4].setText(Integer.toString(whatNumbers[0]*3 + whatNumbers[3]*2));
-    	}
-    	else 
-    	{
-    		if(whatNumbers[0] == whatNumbers[1] && whatNumbers[2] == whatNumbers[4])
-    		{
-    			btn_2[4].setText(Integer.toString(whatNumbers[0]*2 + whatNumbers[2]*3));
-    		}
+	    	if(whatNumbers[0] == whatNumbers[2] && whatNumbers[3] == whatNumbers[4])
+	    	{
+	    		btn_2[4].setText(Integer.toString(whatNumbers[0]*3 + whatNumbers[3]*2));
+	    	}
+	    	else 
+	    	{
+	    		if(whatNumbers[0] == whatNumbers[1] && whatNumbers[2] == whatNumbers[4])
+	    		{
+	    			btn_2[4].setText(Integer.toString(whatNumbers[0]*2 + whatNumbers[2]*3));
+	    		}
+	    	}
     	}
     	
     	///Small Bucket
-    	if(whatNumbers[0] == 1 && whatNumbers[1] == 2 && whatNumbers[2] == 3 && whatNumbers[3] == 4 && whatNumbers[4] == 5)
+    	if(btn_2[5].isEnabled() == true)
     	{
-    		btn_2[5].setText("15");
+	    	if(whatNumbers[0] == 1 && whatNumbers[1] == 2 && whatNumbers[2] == 3 && whatNumbers[3] == 4 && whatNumbers[4] == 5)
+	    	{
+	    		btn_2[5].setText("15");
+	    	}
     	}
     	
     	///Big Bucket
-    	if(whatNumbers[0] == 2 && whatNumbers[1] == 3 && whatNumbers[2] == 4 && whatNumbers[3] == 5 && whatNumbers[4] == 6)
+    	if(btn_2[6].isEnabled() == true)
     	{
-    		btn_2[6].setText("20");
+	    	if(whatNumbers[0] == 2 && whatNumbers[1] == 3 && whatNumbers[2] == 4 && whatNumbers[3] == 5 && whatNumbers[4] == 6)
+	    	{
+	    		btn_2[6].setText("20");
+	    	}
     	}
     	
     	///Chance
-    	btn_2[7].setText(Integer.toString(whatNumbers[0] + whatNumbers[1] + whatNumbers[2] + whatNumbers[3] + whatNumbers[4]));
+    	if(btn_2[7].isEnabled() == true)
+    	{
+    		btn_2[7].setText(Integer.toString(whatNumbers[0] + whatNumbers[1] + whatNumbers[2] + whatNumbers[3] + whatNumbers[4]));
+    	}
     	
     	///General
-    	if(whatNumbers[0] == whatNumbers[4])
+    	if(btn_2[8].isEnabled() == true)
     	{
-    		btn_2[8].setText(Integer.toString(whatNumbers[0]*5 + 50));
+	    	if(whatNumbers[0] == whatNumbers[4])
+	    	{
+	    		btn_2[8].setText(Integer.toString(whatNumbers[0]*5 + 50));
+	    	}
     	}
     	
     }
