@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -45,6 +46,7 @@ public class ProjectSetup implements ActionListener {
     static String[] data ={"pair","2 pairs","triple","square","full","small bucket","big bucket","chance","general"};
     static JButton[] btn_2 = new JButton[9];
     static JLabel total = new JLabel();
+    static int totalScore = 0;
     
     public static void Run(){
         JFrame frame = new JFrame("mainMenu");
@@ -134,7 +136,7 @@ public class ProjectSetup implements ActionListener {
             panel.add(lb_2[i]);
         }
         
-        total.setText(String.format("Your total score is: %2d", 2));
+        total.setText(String.format("Your total score is: %2d", totalScore));
         total.setHorizontalAlignment(SwingConstants.RIGHT);
         total.setHorizontalTextPosition(SwingConstants.CENTER);
         total.setBounds(0, 420, 200, 14);
@@ -219,6 +221,134 @@ public class ProjectSetup implements ActionListener {
     }
     
     public void calculate_results() {
-    	//TODO
+    	
+    	int whatNumbers[] = new int[5];
+    	
+    	for(int i = 0; i < 5; i++)
+    	{
+    		whatNumbers[i] = dice_number[i];
+    	}
+    	
+    	//Arrays.sort(whatNumbers);
+    	
+    	/// Bubble sort
+    	
+    	for (int i = 0; i < 5 - 1; i++)
+    	{
+            for (int j = 0; j < 5 - i - 1; j++)
+            {
+                if (whatNumbers[j] > whatNumbers[j + 1]) {
+                    int temp = whatNumbers[j];
+                    whatNumbers[j] = whatNumbers[j + 1];
+                    whatNumbers[j + 1] = temp;
+                }
+            }
+    	}
+    	
+    	/// Mandatory part
+    	
+    	for(int i = 1; i <= 6; i++) 
+    	{
+    		int numberOfThis = 0;
+    		for(int j = 0; j < 5; j++)
+    		{
+    			if(whatNumbers[j] == i)
+    			{
+    				numberOfThis++;
+    			}
+    		}
+    		
+    		if(numberOfThis < 3)
+    		{
+    			btn_ch[i - 1].setText("-25");
+    		}
+    		else 
+    		{
+    			btn_ch[i - 1].setText(Integer.toString((numberOfThis - 3)*i));
+    		}
+    	
+    	}
+    	
+    	/// Combinations part
+    	
+    	/// Pair
+    	for(int i = 3; i >= 0; i--)
+    	{
+    		if(whatNumbers[i] == whatNumbers[i + 1])
+    		{
+    			btn_2[0].setText(Integer.toString(whatNumbers[i]*2));
+    			break;
+    		}
+    	}
+    	
+    	/// 2 Pairs
+    	for(int i = 3; i >= 0; i--)
+    	{
+    		if(whatNumbers[i] == whatNumbers[i + 1])
+    		{
+    			for(int j = i - 2; j >= 0; j--)
+    			{
+    				if(whatNumbers[j] == whatNumbers[j + 1])
+    				{
+    					btn_2[1].setText(Integer.toString(whatNumbers[i]*2 + whatNumbers[j]*2));
+    				}
+    			}
+    		}
+    	}
+    	
+    	/// Triple
+    	for(int i = 2; i >= 0; i--)
+    	{
+    		if(whatNumbers[i] == whatNumbers[i + 2])
+    		{
+    			btn_2[2].setText(Integer.toString(whatNumbers[i]*3));
+    		}
+    	}
+    	
+    	/// Square
+    	for(int i = 1; i >= 0; i--)
+    	{
+    		if(whatNumbers[i] == whatNumbers[i + 3])
+    		{
+    			btn_2[3].setText(Integer.toString(whatNumbers[i]*4));
+    		}
+    	}
+    	
+    	///Full
+    	if(whatNumbers[0] == whatNumbers[2] && whatNumbers[3] == whatNumbers[4])
+    	{
+    		btn_2[4].setText(Integer.toString(whatNumbers[0]*3 + whatNumbers[3]*2));
+    	}
+    	else 
+    	{
+    		if(whatNumbers[0] == whatNumbers[1] && whatNumbers[2] == whatNumbers[4])
+    		{
+    			btn_2[4].setText(Integer.toString(whatNumbers[0]*2 + whatNumbers[2]*3));
+    		}
+    	}
+    	
+    	///Small Bucket
+    	if(whatNumbers[0] == 1 && whatNumbers[1] == 2 && whatNumbers[2] == 3 && whatNumbers[3] == 4 && whatNumbers[4] == 5)
+    	{
+    		btn_2[5].setText("15");
+    	}
+    	
+    	///Big Bucket
+    	if(whatNumbers[0] == 2 && whatNumbers[1] == 3 && whatNumbers[2] == 4 && whatNumbers[3] == 5 && whatNumbers[4] == 6)
+    	{
+    		btn_2[6].setText("20");
+    	}
+    	
+    	///Chance
+    	btn_2[7].setText(Integer.toString(whatNumbers[0] + whatNumbers[1] + whatNumbers[2] + whatNumbers[3] + whatNumbers[4]));
+    	
+    	///General
+    	if(whatNumbers[0] == whatNumbers[4])
+    	{
+    		btn_2[8].setText(Integer.toString(whatNumbers[0]*5 + 50));
+    	}
+    	
     }
 }
+
+
