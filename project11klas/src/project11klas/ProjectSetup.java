@@ -6,38 +6,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Arrays;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.JTable;
-import javax.swing.JFormattedTextField;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Scanner;
-
 
 public class ProjectSetup implements ActionListener {
-
-
-    
     
     private static JButton newGame;
     private static JButton rollDices;
     private static JButton exit;
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         Run();
     }
-    
-
     
     static JButton[] dice = new JButton[5];
     static int[] dice_number = new int[5];
@@ -55,15 +45,11 @@ public class ProjectSetup implements ActionListener {
     static boolean areDicesThrown = false;
     static int combinationsUsed = 0;
     static boolean[] combinationsSelected = new boolean[15];
-    
     static String username;
-    
     
     public static void Run() {
     	
-    	 Scanner sc = new Scanner(System.in);
-    	 username = sc.next();
-    	 sc.close();
+    	username = JOptionPane.showInputDialog("Enter name");
 	
         JFrame frame = new JFrame("mainMenu");
         frame.setSize(534,550);
@@ -77,8 +63,6 @@ public class ProjectSetup implements ActionListener {
         title.setBounds(10,10,498,40);
         title.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,20));
         panel.add(title);
-
-       
         
         rollDices = new JButton("Roll");
         rollDices.setBounds(277,174,158,44);
@@ -105,7 +89,6 @@ public class ProjectSetup implements ActionListener {
         remaining.setHorizontalAlignment(SwingConstants.CENTER);
         remaining.setBounds(221, 134, 270, 44);
         panel.add(remaining);
-        
         
         for (int i = 0;i<6;i++) 
         { 
@@ -419,8 +402,6 @@ public class ProjectSetup implements ActionListener {
 			    }
 		    }
         }
-       
-        
     }
     
     public void calculate_results() {
@@ -432,8 +413,7 @@ public class ProjectSetup implements ActionListener {
     		whatNumbers[i] = dice_number[i];
     	}
     	
-    	//Arrays.sort(whatNumbers);
-    	
+    	//Arrays.sort(whatNumbers);   	
     	/// Bubble sort
     	
     	for (int i = 0; i < 5 - 1; i++)
@@ -595,8 +575,5 @@ public class ProjectSetup implements ActionListener {
 	    		btn_2[8].setText(Integer.toString(whatNumbers[0]*5 + 50));
 	    	}
     	}
-    	
     }
 }
-
-
