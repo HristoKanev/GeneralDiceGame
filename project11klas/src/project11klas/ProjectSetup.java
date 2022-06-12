@@ -16,7 +16,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.JFormattedTextField;
-
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 
 public class ProjectSetup implements ActionListener {
@@ -28,7 +33,7 @@ public class ProjectSetup implements ActionListener {
     private static JButton rollDices;
     private static JButton exit;
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Run();
     }
     
@@ -51,7 +56,15 @@ public class ProjectSetup implements ActionListener {
     static int combinationsUsed = 0;
     static boolean[] combinationsSelected = new boolean[15];
     
-    public static void Run(){
+    static String username;
+    
+    
+    public static void Run() {
+    	
+    	 Scanner sc = new Scanner(System.in);
+    	 username = sc.next();
+    	 sc.close();
+	
         JFrame frame = new JFrame("mainMenu");
         frame.setSize(534,550);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -155,7 +168,7 @@ public class ProjectSetup implements ActionListener {
         gameOver.setBounds(81, 445, 439, 40);
         gameOver.setVisible(false);
         panel.add(gameOver);
-        
+       
         frame.setFocusable(true);
         frame.addKeyListener(new KeyListener() {
 
@@ -187,7 +200,7 @@ public class ProjectSetup implements ActionListener {
    
    
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)  {
 
 
         if(e.getSource()==newGame)
@@ -302,6 +315,30 @@ public class ProjectSetup implements ActionListener {
 				    		combinationsUsed++;
 				    		if(combinationsUsed == 15)
 				    		{
+				    			 File file = new File("points.txt");
+				    			 try {
+				    			 if (file.exists()) {
+				    				 BufferedWriter output = new BufferedWriter(new FileWriter(file, true));
+				    					 output.append(username + " " + totalScore + "\n");
+				    					
+				    					//  output.append(points)
+				    					 // Close the file
+				    					 output.close();
+				    			 }
+				    			 else {
+				    				 
+				    			 // Create a file
+				    			 PrintWriter output = new PrintWriter(file);
+				    			 output.print(username + " ");
+				    			 output.println(totalScore);
+				    			 // Close the file
+				    			 output.close();
+				    			 }
+				    			 }
+				    			 catch(IOException exc)
+				    			 {
+				    				 exc.printStackTrace();
+				    			 }
 				    			gameOver.setText(String.format("Game Over! Your total score is: %2d", totalScore));
 				    			gameOver.setVisible(true);
 				    			rollDices.setEnabled(false);
@@ -346,10 +383,35 @@ public class ProjectSetup implements ActionListener {
 				    		combinationsUsed++;
 				    		if(combinationsUsed == 15)
 				    		{
+				    			 File file = new File("points.txt");
+				    			 try {
+				    			 if (file.exists()) {
+				    				 BufferedWriter output = new BufferedWriter(new FileWriter(file, true));
+				    					 output.append(username + " " + totalScore + "\n");
+				    					
+				    					//  output.append(points)
+				    					 // Close the file
+				    					 output.close();
+				    			 }
+				    			 else {
+				    				 
+				    			 // Create a file
+				    			 PrintWriter output = new PrintWriter(file);
+				    			 output.print(username + " ");
+				    			 output.println(totalScore);
+				    			 // Close the file
+				    			 output.close();
+				    			 }
+				    			 }
+				    			 catch(IOException exc)
+				    			 {
+				    				 exc.printStackTrace();
+				    			 }
 				    			gameOver.setText(String.format("Game Over! Your total score is: %2d", totalScore));
 				    			gameOver.setVisible(true);
 				    			rollDices.setEnabled(false);
 				    		}
+				    		
 				    		return ;
 				    	}
 				    }
