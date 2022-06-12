@@ -49,6 +49,7 @@ public class ProjectSetup implements ActionListener {
     static int totalScore = 0;
     static boolean areDicesThrown = false;
     static int combinationsUsed = 0;
+    static boolean[] combinationsSelected = new boolean[15];
     
     public static void Run(){
         JFrame frame = new JFrame("mainMenu");
@@ -99,6 +100,7 @@ public class ProjectSetup implements ActionListener {
         	btn_ch[i].addActionListener(new ProjectSetup());
         	btn_ch[i].setBounds(126, 78+i*20, 74, 19);
         	btn_ch[i].setFocusPainted(false);
+        	btn_ch[i].setEnabled(false);
             panel.add(btn_ch[i]);
             
             lb_ch[i] = new JLabel(Integer.toString(i+1));
@@ -106,6 +108,8 @@ public class ProjectSetup implements ActionListener {
             lb_ch[i].setHorizontalTextPosition(SwingConstants.CENTER);
             lb_ch[i].setBounds(0, 80+i*20, 116, 14);
             panel.add(lb_ch[i]);
+            
+            combinationsSelected[i]=false;
         }
         
         for (int i = 0;i<5;i++) 
@@ -128,6 +132,7 @@ public class ProjectSetup implements ActionListener {
         	btn_2[i].addActionListener(new ProjectSetup());
         	btn_2[i].setBounds(126, 220+i*20, 74, 19);
         	btn_2[i].setFocusPainted(false);
+        	btn_2[i].setEnabled(false);
             panel.add(btn_2[i]);
             
             lb_2[i] = new JLabel(data[i]);
@@ -135,6 +140,8 @@ public class ProjectSetup implements ActionListener {
             lb_2[i].setHorizontalTextPosition(SwingConstants.CENTER);
             lb_2[i].setBounds(0, 220+i*20, 116, 14);
             panel.add(lb_2[i]);
+            
+            combinationsSelected[i+6]=false;
         }
         
         total.setText(String.format("Total score: %2d", totalScore));
@@ -200,12 +207,14 @@ public class ProjectSetup implements ActionListener {
     		for(int j = 0; j < 6; j++)
     		{
     			btn_ch[j].setText(null);
-    			btn_ch[j].setEnabled(true);
+    			btn_ch[j].setEnabled(false);
+    			combinationsSelected[j]=false;
     		}
     		for(int j = 0; j < 9; j++)
     		{
     			btn_2[j].setText(null);
-    			btn_2[j].setEnabled(true);
+    			btn_2[j].setEnabled(false);
+    			combinationsSelected[j+6]=false;
     		}
     		combinationsUsed = 0;
     		gameOver.setVisible(false);
@@ -261,7 +270,7 @@ public class ProjectSetup implements ActionListener {
 				    {
 				    	if(e.getSource() == btn_ch[i] && areDicesThrown == true) 
 				    	{
-				    		btn_ch[i].setEnabled(false);
+				    		combinationsSelected[i]=true;
 				    		rolls = 3;
 				    		remaining.setText(String.format("You have %2d remaining rolls", rolls));
 				    		totalScore += Integer.parseInt(btn_ch[i].getText());
@@ -276,14 +285,16 @@ public class ProjectSetup implements ActionListener {
 				    		areDicesThrown = false;
 				    		for(int j = 0; j < 6; j++)
 				    		{
-				    			if(btn_ch[j].isEnabled() == true)
+				    			btn_ch[j].setEnabled(false);
+				    			if(!combinationsSelected[j])
 				    			{
 				    				btn_ch[j].setText(null);
 				    			}
 				    		}
 				    		for(int j = 0; j < 9; j++)
 				    		{
-				    			if(btn_2[j].isEnabled() == true)
+				    			btn_2[j].setEnabled(false);
+				    			if(!combinationsSelected[j+6])
 				    			{
 				    				btn_2[j].setText(null);
 				    			}
@@ -303,7 +314,7 @@ public class ProjectSetup implements ActionListener {
 				    {
 				    	if(e.getSource() == btn_2[i] && areDicesThrown == true) 
 				    	{
-				    		btn_2[i].setEnabled(false);
+				    		combinationsSelected[i+6]=true;
 				    		rolls = 3;
 				    		remaining.setText(String.format("You have %2d remaining rolls", rolls));
 				    		totalScore += Integer.parseInt(btn_2[i].getText());
@@ -318,14 +329,16 @@ public class ProjectSetup implements ActionListener {
 				    		areDicesThrown = false;
 				    		for(int j = 0; j < 6; j++)
 				    		{
-				    			if(btn_ch[j].isEnabled() == true)
+				    			btn_ch[j].setEnabled(false);
+				    			if(!combinationsSelected[j+6])
 				    			{
 				    				btn_ch[j].setText(null);
 				    			}
 				    		}
 				    		for(int j = 0; j < 9; j++)
 				    		{
-				    			if(btn_2[j].isEnabled() == true)
+				    			btn_2[j].setEnabled(false);
+				    			if(!combinationsSelected[j+6])
 				    			{
 				    				btn_2[j].setText(null);
 				    			}
@@ -377,8 +390,9 @@ public class ProjectSetup implements ActionListener {
     	
     	for(int i = 1; i <= 6; i++) 
     	{
-    		if(btn_ch[i - 1].isEnabled() == true)
+    		if(!combinationsSelected[i - 1])
     		{
+    			btn_ch[i-1].setEnabled(true);
 				int numberOfThis = 0;
 				for(int j = 0; j < 5; j++)
 				{
@@ -403,21 +417,24 @@ public class ProjectSetup implements ActionListener {
     	/// Combinations part
     	
     	/// Pair
-    	if(btn_2[0].isEnabled() == true)
+    	if(!combinationsSelected[6])
     	{
+			btn_2[0].setEnabled(true);
+			btn_2[0].setText("0");
 	    	for(int i = 3; i >= 0; i--)
 	    	{
 	    		if(whatNumbers[i] == whatNumbers[i + 1])
 	    		{
 	    			btn_2[0].setText(Integer.toString(whatNumbers[i]*2));
-	    			break;
 	    		}
 	    	}
     	}
     	
     	/// 2 Pairs
-    	if(btn_2[1].isEnabled() == true)
+    	if(!combinationsSelected[7])
     	{
+    		btn_2[1].setEnabled(true);
+    		btn_2[1].setText("0");
 	    	for(int i = 3; i >= 0; i--)
 	    	{
 	    		if(whatNumbers[i] == whatNumbers[i + 1])
@@ -428,14 +445,17 @@ public class ProjectSetup implements ActionListener {
 	    				{
 	    					btn_2[1].setText(Integer.toString(whatNumbers[i]*2 + whatNumbers[j]*2));
 	    				}
+	    				
 	    			}
 	    		}
 	    	}
     	}
     	
     	/// Triple
-    	if(btn_2[2].isEnabled() == true)
+    	if(!combinationsSelected[8])
     	{
+    		btn_2[2].setEnabled(true);
+    		btn_2[2].setText("0");
 	    	for(int i = 2; i >= 0; i--)
 	    	{
 	    		if(whatNumbers[i] == whatNumbers[i + 2])
@@ -446,8 +466,10 @@ public class ProjectSetup implements ActionListener {
     	}
     	
     	/// Square
-    	if(btn_2[3].isEnabled() == true)
+    	if(!combinationsSelected[9])
     	{
+			btn_2[3].setEnabled(true);
+    		btn_2[3].setText("0");
 	    	for(int i = 1; i >= 0; i--)
 	    	{
 	    		if(whatNumbers[i] == whatNumbers[i + 3])
@@ -458,24 +480,25 @@ public class ProjectSetup implements ActionListener {
     	}
     	
     	///Full
-    	if(btn_2[4].isEnabled() == true)
+    	if(!combinationsSelected[10])
     	{
+			btn_2[4].setEnabled(true);
+			btn_2[4].setText("0");
 	    	if(whatNumbers[0] == whatNumbers[2] && whatNumbers[3] == whatNumbers[4])
 	    	{
 	    		btn_2[4].setText(Integer.toString(whatNumbers[0]*3 + whatNumbers[3]*2));
 	    	}
-	    	else 
+	    	else if(whatNumbers[0] == whatNumbers[1] && whatNumbers[2] == whatNumbers[4])
 	    	{
-	    		if(whatNumbers[0] == whatNumbers[1] && whatNumbers[2] == whatNumbers[4])
-	    		{
-	    			btn_2[4].setText(Integer.toString(whatNumbers[0]*2 + whatNumbers[2]*3));
-	    		}
+	    		btn_2[4].setText(Integer.toString(whatNumbers[0]*2 + whatNumbers[2]*3));
 	    	}
     	}
     	
     	///Small Bucket
-    	if(btn_2[5].isEnabled() == true)
+    	if(!combinationsSelected[11])
     	{
+			btn_2[5].setEnabled(true);
+			btn_2[5].setText("0");
 	    	if(whatNumbers[0] == 1 && whatNumbers[1] == 2 && whatNumbers[2] == 3 && whatNumbers[3] == 4 && whatNumbers[4] == 5)
 	    	{
 	    		btn_2[5].setText("15");
@@ -483,8 +506,10 @@ public class ProjectSetup implements ActionListener {
     	}
     	
     	///Big Bucket
-    	if(btn_2[6].isEnabled() == true)
+    	if(!combinationsSelected[12])
     	{
+			btn_2[6].setEnabled(true);
+			btn_2[6].setText("0");
 	    	if(whatNumbers[0] == 2 && whatNumbers[1] == 3 && whatNumbers[2] == 4 && whatNumbers[3] == 5 && whatNumbers[4] == 6)
 	    	{
 	    		btn_2[6].setText("20");
@@ -492,14 +517,17 @@ public class ProjectSetup implements ActionListener {
     	}
     	
     	///Chance
-    	if(btn_2[7].isEnabled() == true)
+    	if(!combinationsSelected[13])
     	{
+			btn_2[7].setEnabled(true);
     		btn_2[7].setText(Integer.toString(whatNumbers[0] + whatNumbers[1] + whatNumbers[2] + whatNumbers[3] + whatNumbers[4]));
     	}
     	
     	///General
-    	if(btn_2[8].isEnabled() == true)
+    	if(!combinationsSelected[14])
     	{
+			btn_2[8].setEnabled(true);
+			btn_2[8].setText("0");
 	    	if(whatNumbers[0] == whatNumbers[4])
 	    	{
 	    		btn_2[8].setText(Integer.toString(whatNumbers[0]*5 + 50));
