@@ -330,7 +330,7 @@ public class ProjectSetup implements ActionListener {
 				    		for(int j = 0; j < 6; j++)
 				    		{
 				    			btn_ch[j].setEnabled(false);
-				    			if(!combinationsSelected[j+6])
+				    			if(!combinationsSelected[j])
 				    			{
 				    				btn_ch[j].setText(null);
 				    			}
